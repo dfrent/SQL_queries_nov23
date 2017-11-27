@@ -1,0 +1,50 @@
+1.Find the albums recorded by the artist Queen.
+
+Album.where("artist_id =?",((Artist.where(name: 'Queen')).ids)).ids
+return = [36, 185, 186]
+
+2.Count how many tracks belong to the media type "Protected MPEG-4 video file".
+
+Track.where(media_type_id: ((MediaType.where(name: "Protected MPEG-4 video file")).ids)).count
+return = 214
+
+3.Find the genre with the name "Hip Hop/Rap".
+
+ Genre.where(name: 'Hip Hop/Rap').ids
+ return = 17
+
+4.Count how many tracks belong to the "Hip Hop/Rap" genre
+
+rack.where(genre_id: (Genre.where(name: 'Hip Hop/Rap').ids)).count
+return = 35
+
+5.Find the total amount of time required to listen to all the tracks in the database.
+
+Track.sum(:milliseconds).to_f/1000/60/60/24
+return = 15.94 days
+
+6.Find the highest price of any track that has the media type "MPEG audio file".
+
+Track.where(media_type_id: (MediaType.where(name: "MPEG audio file")).ids).maximum(:unit_price)
+return = 0.99e0
+
+7.Find the name of the most expensive track that has the media type "MPEG audio file".
+
+Track.where(media_type_id: (MediaType.where(name: "MPEG audio file")).ids, unit_price: Track.where(media_type_id: (MediaType.where(name: "MPEG audio file")).ids).maximum(:unit_price)).pluck(:name)
+return = All tracks have same cost 0.99e0
+
+8.Find the 2 oldest artists.
+
+Artist.order(created_at: :desc).limit(2).pluck(:name)
+return = ["Los Hermanos", "Elis Regina"]
+
+
+9.Find the least expensive track that has the genre "Electronica/Dance".
+
+Track.where(genre_id: (Genre.where(name: "Electronica/Dance")).ids).order(unit_price: :asc) = ["Instinto Colectivo", "Chapa o Coco", "Prostituta",...]
+return = 30 tracks
+
+10.Find all "MPEG autio file" tracks in the genre "Electronica/Dance".
+
+Track.where(genre_id: (Genre.where(name: "Electronica/Dance")).ids, media_type_id: (MediaType.where(name: "MPEG audio file")).ids).pluck(:name)
+return = 28 tracks
